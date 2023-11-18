@@ -1,75 +1,31 @@
-import React, { useState, useEffect } from 'react';
+// TodoList.jsx
+import React, { useState } from 'react';
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
 
-  useEffect(() => {
-    fetchAndUpdateTasks();
-  }, []);
-
-  const fetchAndUpdateTasks = () => {
-    fetchTasksFromServer().then((data) => {
-      if (Array.isArray(data)) {
-        setTasks(data);
-      } else {
-        console.error('Data from the server is not an array:', data);
-      }
-    });
-  };
-
-  const fetchTasksFromServer = async () => {
-    try {
-		  const response = await fetch('https://playground.4geeks.com/apis/fake/todos/user/alesanchezr');
-		  return await response.json();
-	  } catch (error) {
-		  console.error('Error fetching tasks:', error);
-	  }
-  };
 
   const addTask = () => {
-    if (taskInput.trim() !== '') {
-      const newTask = taskInput;
-      updateTasks([...tasks, newTask]);
-      setTaskInput('');
+    if (taskInput.trim() !== '') { //checking if the result is not an empty string
+      setTasks([...tasks, taskInput]); //creates a new array with all existing tasks plus the new one
+      setTaskInput(''); //prepares the input field for the user to add another task
     }
   };
 
   const deleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    updateTasks(updatedTasks);
-  };
-
-  const updateTasks = (updatedTasks) => {
-    updateTasksOnServer(updatedTasks).then(() => {
-      setTasks(updatedTasks);
-    });
-  };
-
-  const updateTasksOnServer = async (updatedTasks) => {
-    try {
-		  const response = await fetch('https://playground.4geeks.com/apis/fake/todos/user/alesanchezr', {
-			  method: 'PUT',
-			  body: JSON.stringify(updatedTasks),
-			  headers: {
-				  'Content-Type': 'application/json',
-			  },
-		  });
-		  return await response.json();
-	  } catch (error) {
-		  console.error('Error updating tasks on the server:', error);
-	  }
+    setTasks(tasks.filter((_, i) => i !== index)); // checks the index of each task and keeps only those where the index is not equal to the index parameter
   };
 
   return (
-    <div id="todo-list">
+    <div id='todo-list'>
       <h1>Things to do</h1>
       <input
         type="text"
         placeholder="Add a new task"
-        value={taskInput}
-        onChange={(e) => setTaskInput(e.target.value)}
-        onKeyUp={(e) => e.key === 'Enter' && addTask()}
+        value={taskInput} // bind the input field's value to the taskInput state variable
+        onChange={(e) => setTaskInput(e.target.value)} // updates the taskInput state using setTaskInput
+        onKeyUp={(e) => e.key === 'Enter' && addTask()} //if the Enter key was pressed the addTask function is called
       />
       <ul id="task-list">
         {tasks.length === 0 ? (
@@ -85,12 +41,10 @@ const TodoList = () => {
           ))
         )}
       </ul>
-      {tasks.length > 0 && (
+      {tasks.length > 0 && ( //if the array length is not greater than 0 nothing is rendered
         <div className="item-count">
-          {tasks.length === 1
-            ? `${tasks.length} item left`
-            : `${tasks.length} items left`}
-        </div>
+          {tasks.length === 1 ? `1 item left` : `${tasks.length} items left`}
+        </div>// if the array length is equal to 1 the first case is rendered, otherwise the second one using a ternary
       )}
     </div>
   );
