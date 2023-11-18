@@ -23,9 +23,9 @@ const MyTodoComponent = () => {
   
     return (
       <div className='App'>
-        {todos.map(todo => todo.label)}
+        {todos?.map(todo => todo.label)}
       </div>
     );
   };
   
-  export { MyTodoComponent };
+  export default MyTodoComponent;

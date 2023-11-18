@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MyTodoComponent from './mytodocomponent';
+import MyTodoComponent from './mytodocomponent.jsx';
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
@@ -19,6 +19,7 @@ const TodoList = () => {
 
   return (
     <div id='todo-list'>
+    <MyTodoComponent></MyTodoComponent>
       <h1>Things to do</h1>
       <input
         type="text"
