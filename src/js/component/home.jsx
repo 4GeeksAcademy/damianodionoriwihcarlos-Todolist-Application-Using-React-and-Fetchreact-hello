@@ -1,10 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import MyTodoComponent from './mytodocomponent.jsx';
 
-const TodoList = () => {
+export default function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
+  const url = "https://playground.4geeks.com/apis/fake/todos/user/damianodionori"
 
+  useEffect(() => {
+		//fetch to create the user
+		fetch(url, {
+			method: "POST", // post to create, put to modify
+			headers: {
+				"Content-Type": "application/json", //this will always be like this
+			},
+			body: JSON.stringify([])
+		})
+			//if the resp.ok is true, means the user was created (didn't exist, else, we fetch the info from our user)
+			.then(resp => resp.ok ? resp.json() : fetchData())
+			.then(data => setTasks(data))
+			.catch(error => error.msg == "The user exist" ? fetchData() : console.log(error))
+	}, [])
+
+  const fetchData = () => {
+		//fetch info from user
+		fetch(url) //this would be a GET, but since it's the default behavior, no need to specify
+			.then(resp => resp.json()) // we parse the response to JSON format (JS cannot work with TEXT, and we receive text because everything on the internet is text)
+			.then(data => setTasks(data)) //once parsed, we receive the data, this data we store it on the state to use it
+			.catch(error => console.log(error)) //if errors, it'll be catched here
+	}
+  
+  const handleSubmit = e => {
+		e.preventDefault();
+		setTasks([...tasks, { label: newTask, done: false }]) //we store the new task on the todoList state witht the same format we are we are working (obj)
+	}
+
+  useEffect(() => {
+		//everytime the todoList state gets modified, this will executed and update the todoList on the back
+		fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(todoList) // since we are sending information through internet, we need to make our data text, that's the JSON.stringify
+		})
+	}, [tasks])
 
   const addTask = () => {
     if (taskInput.trim() !== '') { //checking if the result is not an empty string
@@ -19,7 +57,6 @@ const TodoList = () => {
 
   return (
     <div id='todo-list'>
-    <MyTodoComponent></MyTodoComponent>
       <h1>Things to do</h1>
       <input
         type="text"
@@ -50,5 +87,3 @@ const TodoList = () => {
     </div>
   );
 };
-
-export default TodoList;
