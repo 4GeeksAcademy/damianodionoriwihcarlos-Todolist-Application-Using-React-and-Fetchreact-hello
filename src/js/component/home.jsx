@@ -8,16 +8,16 @@ export default function TodoList() {
   useEffect(() => {
 		//fetch to create the user
 		fetch(url, {
-			method: "POST", // post to create, put to modify
+			method: "POST", // post to create
 			headers: {
-				"Content-Type": "application/json", //this will always be like this
+				"Content-Type": "application/json",
 			},
 			body: JSON.stringify([])
 		})
 			//if the resp.ok is true, means the user was created (didn't exist, else, we fetch the info from our user)
 			.then(resp => resp.ok ? resp.json() : fetchData())
 			.then(data => setTasks(data))
-			.catch(error => error.msg == "The user exist" ? fetchData() : console.log(error))
+			.catch(error => error.msg == "The user exists" ? fetchData() : console.log(error))
 	}, [])
 
   const fetchData = () => {
@@ -30,23 +30,12 @@ export default function TodoList() {
   
   const handleSubmit = e => {
 		e.preventDefault();
-		setTasks([...tasks, { label: newTask, done: false }]) //we store the new task on the todoList state witht the same format we are we are working (obj)
+		setTasks([...tasks, { label: newTask, done: false }]) //we store the new task on the todoList state with the same format we are we are working (obj)
 	}
-
-  useEffect(() => {
-		//everytime the todoList state gets modified, this will executed and update the todoList on the back
-		fetch(url, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(todoList) // since we are sending information through internet, we need to make our data text, that's the JSON.stringify
-		})
-	}, [tasks])
 
   const addTask = () => {
     if (taskInput.trim() !== '') { //checking if the result is not an empty string
-      setTasks([...tasks, taskInput]); //creates a new array with all existing tasks plus the new one
+      setTasks([...tasks, { label: taskInput, done: false }]); //creates a new array with all existing tasks plus the new one
       setTaskInput(''); //prepares the input field for the user to add another task
     }
   };
@@ -54,6 +43,8 @@ export default function TodoList() {
   const deleteTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index)); // checks the index of each task and keeps only those where the index is not equal to the index parameter
   };
+
+  console.log(tasks);
 
   return (
     <div id='todo-list'>
@@ -66,12 +57,12 @@ export default function TodoList() {
         onKeyUp={(e) => e.key === 'Enter' && addTask()} //if the Enter key was pressed the addTask function is called
       />
       <ul id="task-list">
-        {tasks.length === 0 ? (
+        {tasks && tasks.length === 0 ? (
           <p id="no-tasks">No tasks, add a task</p>
         ) : (
-          tasks.map((task, index) => (
+          tasks && tasks.map((task, index) => (
             <li key={index}>
-              <span>{task}</span>
+              <span>{task.label}</span>
               <span className="delete-task" onClick={() => deleteTask(index)}>
                 ❌
               </span>
@@ -79,7 +70,7 @@ export default function TodoList() {
           ))
         )}
       </ul>
-      {tasks.length > 0 && ( //if the array length is not greater than 0 nothing is rendered
+      {tasks && tasks.length > 0 && ( //if the array length is not greater than 0 nothing is rendered
         <div className="item-count">
           {tasks.length === 1 ? `1 item left` : `${tasks.length} items left`}
         </div>// if the array length is equal to 1 the first case is rendered, otherwise the second one using a ternary
