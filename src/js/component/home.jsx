@@ -78,7 +78,7 @@ export default function TodoList() {
           onChange={(e) => setTaskInput(e.target.value)}
           ref={inputRef}
         />
-        <button type="submit">Add Task</button>
+        <button className="add-task-button" type="submit">Add Task</button>
       </form>
       <ul id="task-list" className='sidebar'>
         {tasks && tasks.length === 0 ? (
@@ -94,14 +94,16 @@ export default function TodoList() {
           ))
         )}
       </ul>
-      {tasks && tasks.length > 0 && (
-        <div className="item-count">
-          {tasks.length === 1 ? `1 item left` : `${tasks.length} items left`}
-        </div>
-      )}
-      {tasks && tasks.length > 0 && (
-        <button onClick={clearAllTasks} className="clear-all-button">Clear All Tasks</button>
-      )}
+      <div className='item-count-and-clear'>
+        {tasks && tasks.length > 0 && (
+          <button onClick={clearAllTasks} className="clear-all-button">Clear All Tasks</button>
+        )}
+        {tasks && tasks.length > 0 && (
+          <div className="item-count">
+            {tasks.length === 1 ? `1 item left` : `${tasks.length} items left`}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -13,7 +13,6 @@ h1 {
 .sidebar {
   max-height: 300px;
   overflow-y: auto;
-  /* Apply scrollbar only if needed */
   padding-right: 10px;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
@@ -65,13 +64,24 @@ input[type="text"] {
 #no-tasks {
   text-align: center;
   color: #777;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .item-count {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: flex-end;
   font-size: 14px;
   color: #555;
-  margin-top: 10px;
+  margin: 10px 0;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  height: 40px;
+  padding: 10px;
+  margin-left: auto;
 }
 
 .task-form {
@@ -79,7 +89,7 @@ input[type="text"] {
   align-items: center;
 }
 
-button {
+.add-task-button {
   border: 1px solid #ccc;
   color: white;
   background-color: #5c4caf;
@@ -96,5 +106,19 @@ button:hover {
 }
 
 .clear-all-button {
-  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  color: white;
+  background-color: #5c4caf;
+  cursor: pointer;
+  height: 40px;
+  width: auto;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  padding: 8px;
+}
+
+.item-count-and-clear {
+  display: flex;
+  align-items: center;
 }
