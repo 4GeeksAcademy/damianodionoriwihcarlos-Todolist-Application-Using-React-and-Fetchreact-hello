@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
   const url = "https://playground.4geeks.com/apis/fake/todos/user/damianodionori";
+  const inputRef = useRef(null);
 
   useEffect(() => {
     fetch(url, {
@@ -49,6 +50,7 @@ export default function TodoList() {
     if (taskInput.trim() !== '') {
       updateTaskList([...tasks, { label: taskInput, done: false }]);
       setTaskInput('');
+      inputRef.current.focus();
     }
   };
 
@@ -68,15 +70,17 @@ export default function TodoList() {
   return (
     <div id='todo-list'>
       <h1>Things to do</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="task-form">
         <input
           type="text"
           placeholder="Add a new task"
           value={taskInput}
           onChange={(e) => setTaskInput(e.target.value)}
+          ref={inputRef}
         />
+        <button type="submit">Add Task</button>
       </form>
-      <ul id="task-list">
+      <ul id="task-list" className='sidebar'>
         {tasks && tasks.length === 0 ? (
           <p id="no-tasks">No tasks, add a task</p>
         ) : (
@@ -96,7 +100,7 @@ export default function TodoList() {
         </div>
       )}
       {tasks && tasks.length > 0 && (
-        <button onClick={clearAllTasks}>Clear All Tasks</button>
+        <button onClick={clearAllTasks} className="clear-all-button">Clear All Tasks</button>
       )}
     </div>
   );
