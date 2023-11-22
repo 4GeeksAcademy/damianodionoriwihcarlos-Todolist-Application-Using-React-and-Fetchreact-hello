@@ -2,6 +2,7 @@
   width: 500px;
   margin: 0 auto;
   font-family: 'Helvetica', sans-serif;
+  padding: 0 10px;
 }
 
 h1 {
@@ -11,7 +12,8 @@ h1 {
 
 .sidebar {
   max-height: 300px;
-  overflow-y: auto; /* Apply scrollbar only if needed */
+  overflow-y: auto;
+  /* Apply scrollbar only if needed */
   padding-right: 10px;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
@@ -36,12 +38,8 @@ li {
   border-radius: 5px;
 }
 
-li:last-child {
-  border-bottom: none; /* Remove border for the last item */
-}
-
 li:hover {
-  background-color: #e3e3e3;
+  background-color: #7bd7d7c4;
 }
 
 .delete-task {
@@ -85,7 +83,6 @@ button {
   border: 1px solid #ccc;
   color: white;
   background-color: #5c4caf;
-  padding: 10px;
   cursor: pointer;
   height: 40px;
   width: auto;

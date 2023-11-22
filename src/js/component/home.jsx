@@ -36,14 +36,14 @@ export default function TodoList() {
   };
 
   const updateTaskList = (newTaskList) => {
+    setTasks(newTaskList);
     fetch(url, {
       method: "PUT", // post to create
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(tasks)
+      body: JSON.stringify(newTaskList)
     })
-    setTasks(newTaskList);
   };
 
   const addTask = () => {
